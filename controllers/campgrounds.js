@@ -21,10 +21,10 @@ module.exports.createCampground = async (req, res) => {
         query: req.body.campground.location,
         limit: 1
     }).send()
-    console.log(geoData.body.features[0].geometry)
+    // console.log(geoData.body.features[0].geometry)
     const campground = new Campground(req.body.campground);
     campground.geometry = geoData.body.features[0].geometry; // geocoding the location
-    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    // const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename })); // adding images from multer to campground
     campground.author = req.user._id // Adding current user as author 
     await campground.save();
@@ -61,8 +61,13 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateCampground = async (req, res) => {
     if (!req.body.campground) throw new expressError('Invalid campground data.', 400);
     const { id } = req.params;
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send()
 
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }); // Expanding req.body.campground with "...". Don't remember why. Find out.
+    campground.geometry = geoData.body.features[0].geometry; // geocoding the location
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.images.push(...imgs); // adding images to campground from multer, same as when creating campground. images and imgs are both arrays, so need to expand imgs before pushing into images.
     await campground.save()
