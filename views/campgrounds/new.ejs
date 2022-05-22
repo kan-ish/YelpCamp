@@ -1,0 +1,48 @@
+<% layout('/layouts/boilerplate') %>
+
+    <div class="row mb-3">
+        <h1 class="text-center">New Campground</h1>
+        <div class="col-6 offset-3">
+
+            <form action="/campgrounds" method="POST" novalidate class="validate-form" enctype="multipart/form-data">
+                <div>
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control mb-2 border-3" type="text" id="title" name="campground[title]"
+                        placeholder="Enter title" required>
+                </div>
+                <div>
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control mb-2 border-3" type="text" id="location" name="campground[location]"
+                        placeholder="Enter location" required>
+                </div>
+                <div>
+                    <label for="images" class="mb-2">Add images</label>
+                    <input type="file" class="form-control mb-2" id="images" name="image" multiple>
+                </div>
+                <!-- <div>
+                    <label class="form-label" for="image">Image</label>
+                    <input class="form-control mb-2 border-3" type="text" id="image" placeholder="Enter image URL"
+                        name="campground[image]">
+                </div> -->
+                <div>
+                    <label class="form-label" for="description">Descripton</label>
+                    <textarea class="form-control mb-2 border-3" type="text" id="description"
+                        name="campground[description]" placeholder="Enter description" required></textarea>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label" for="price">Price</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">$</span>
+                        <input type="text" id="price" step="0.01" class="form-control border-3" placeholder="0.00"
+                            name="campground[price]" aria-label="Amount (to the nearest dollar)" required>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary">Add campground</button>
+                <a class="btn btn-danger" href="/campgrounds">Cancel</a>
+
+            </form>
+
+        </div>
+    </div>
