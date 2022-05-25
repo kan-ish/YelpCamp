@@ -8,6 +8,9 @@ const users = require('../controllers/users') // Controller
 router.get('/register', users.renderRegisterForm)
 router.post('/register', catchAsync(users.register))
 
+// Verify email
+router.post('/verify', users.verifyEmail)
+
 // Login
 router.get('/login', users.renderLoginForm)
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), users.login)

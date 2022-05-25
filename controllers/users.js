@@ -12,33 +12,6 @@ module.exports.register = async (req, res) => {
         const user = new User({ email, username });
         const registeredUser = await User.register(user, password);
         
-        // send email
-        let transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true, // true for 465, false for other ports
-            auth: {
-              user: process.env.MAIL_ID, // "from" email address
-              pass: process.env.PASS, // "from" email password
-            }
-          });
-          // Construct email
-          const mailBody = `<div style="width:80%; text-align:center">
-          <h1>Welcome to YelpCamp!</h1>
-          <img style="width:100%" src="https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
-          <h3>Jump right in and explore our many campgrounds. <br>
-          Feel free to share some of your own and comment on others!</h3>
-          <h3><a href="https://fathomless-anchorage-62415.herokuapp.com/campgrounds">Browse Campgrounds</a></h3>
-          </div>`
-          // send mail with defined transport object
-          let info = await transporter.sendMail({
-            from: '"YelpCamp" <yelpyourcamp@gmail.com>', // sender address
-            to: email, // list of receivers
-            subject: "Welcome to Yelpcamp", // Subject line
-            html: mailBody, // html body
-          });
-        //   console.log(`email sent to ${username} on ${email}`)
-
         req.login(registeredUser, err => {
             if (err) return next(err);
             req.flash('success', 'Welcome to YelpCamp! You are now logged in.');
@@ -67,3 +40,42 @@ module.exports.logout = (req, res) => {
     res.redirect('/');
 }
 
+// verify email
+module.exports.verifyEmail = async (req, res, next) => {
+    const { email, username, password } = req.body;
+
+    // send email
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: process.env.MAIL_ID, // "from" email address
+            pass: process.env.PASS, // "from" email password
+        }
+    });
+    // Construct email
+    const mailBody = `<div style="width:80%; text-align:center">
+    <h1>You are just one step away from creating your first Campground!</h1>
+    <img style="width:100%" src="https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
+    <h3>Verify your email explore our many campgrounds. <br>
+    Feel free to share some of your own and comment on others!</h3>
+    <form action="http://localhost:3000/register" method="POST">
+    <input type="hidden" name="username" value=${username}>
+    <input type="hidden" name="password" value=${password}>
+    <input type="hidden" name="email" value=${email}>
+    <button type="submit">Verify your email</button>
+    </form>
+    </div>`
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+        from: '"YelpCamp" <yelpyourcamp@gmail.com>', // sender address
+        to: email, // list of receivers
+        subject: "Welcome to Yelpcamp", // Subject line
+        html: mailBody, // html body
+    });
+   //   console.log(`email sent to ${username} on ${email}`)
+
+   req.flash('warning', `To complete you registration, please verify you email by clicking the verification link we sent on ${email}!`);
+   res.redirect('/campgrounds/');
+}
