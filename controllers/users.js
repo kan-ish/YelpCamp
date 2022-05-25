@@ -77,5 +77,5 @@ module.exports.verifyEmail = async (req, res, next) => {
    //   console.log(`email sent to ${username} on ${email}`)
 
    req.flash('warning', `To complete you registration, please verify you email by clicking the verification link we sent on ${email}!`);
-   res.redirect('/campgrounds/');
+   res.redirect('https://fathomless-anchorage-62415.herokuapp.com/campgrounds/');
 }
