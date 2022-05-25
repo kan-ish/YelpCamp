@@ -18,8 +18,8 @@ module.exports.register = async (req, res) => {
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-              user: 'yelpyourcamp@gmail.com',
-              pass: 'Yelp@123',
+              user: process.env.MAIL_ID, // "from" email address
+              pass: process.env.PASS, // "from" email password
             }
           });
           // Construct email
