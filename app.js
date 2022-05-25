@@ -35,10 +35,10 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 app.engine('ejs', ejsmate);
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // for parsing URLs from req.body or req.params
+app.use(express.json()); // for parsing jSON from req.body or req.params
 app.use(methodoverride('_method'));
-app.use(express.static(path.join(__dirname, 'public'))); // Dunno what this is for. Find out.
+app.use(express.static(path.join(__dirname, 'public'))); // Specifying path for static files (stylesheets or scripts)
 app.use(mongoSanitize());
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp';
@@ -98,6 +98,7 @@ app.use((req, res, next) => {
     next();
 })
 
+// helmet security execute and config
 app.use(helmet({
     // contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false, // This has changed since 2020.
@@ -148,10 +149,7 @@ app.use(
 );
 
 
-
-
 //Routes
-
 
 app.get('/', (req, res) => {
     res.render('home')
