@@ -66,4 +66,3 @@ module.exports.logout = (req, res) => {
     req.flash('success', 'Goodbye!');
     res.redirect('/');
 }
-
