@@ -60,7 +60,7 @@ module.exports.verifyEmail = async (req, res, next) => {
     <img style="width:100%" src="https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
     <h3>Verify your email explore our many campgrounds. <br>
     Feel free to share some of your own and comment on others!</h3>
-    <form action="http://localhost:3000/register" method="POST">
+    <form action="https://fathomless-anchorage-62415.herokuapp.com/register" method="POST">
     <input type="hidden" name="username" value=${username}>
     <input type="hidden" name="password" value=${password}>
     <input type="hidden" name="email" value=${email}>
