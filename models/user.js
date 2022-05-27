@@ -7,6 +7,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    isActive: {
+        type: Boolean,
+        default: false
     }
 });
 userSchema.plugin(passportLocalMongoose);
