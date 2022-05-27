@@ -11,6 +11,7 @@ module.exports.register = async (req, res) => {
         const { email, username, password } = req.body;
         const user = new User({ email, username });
         const registeredUser = await User.register(user, password);
+        registeredUser.isActive;
 
     // send email
     let transporter = nodemailer.createTransport({
@@ -28,7 +29,8 @@ module.exports.register = async (req, res) => {
     <img style="width:100%" src="https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
     <h3>Verify your email explore our many campgrounds. <br>
     Feel free to share some of your own and comment on others!</h3>
-    <form action="https://fathomless-anchorage-62415.herokuapp.com/verify" method="get">
+    <form action="http://localhost:3000/verify" method="post">
+    <input type="hidden" name="username" value=${username}>
     <button type="submit">Verify your email</button>
     </form>
     </div>`
@@ -44,7 +46,7 @@ module.exports.register = async (req, res) => {
     req.login(registeredUser, err => {
         if (err) return next(err);
         req.flash('warning', `Welcome to YelpCamp! Please verify your email by clicking the verification link we sent on ${email}.`);
-        res.redirect('https://fathomless-anchorage-62415.herokuapp.com/campgrounds'); // http://localhost:3000/campgrounds
+        res.redirect('http://localhost:3000/campgrounds'); // http://localhost:3000/campgrounds
     })
     } catch (e) {
         req.flash('error', `${e.message}. Please try again.`);
@@ -71,8 +73,9 @@ module.exports.logout = (req, res) => {
 
 // verify email
 module.exports.verifyEmail = async (req, res, next) => {   
-    User.isActive = true;
+    const { username } = req.body
+    const user = await User.findOneAndUpdate({ username: username }, {isActive: true})
 
     req.flash('success', 'Email successfully verified!');
-    res.redirect("https://fathomless-anchorage-62415.herokuapp.com/campgrounds")
+    res.redirect("http://localhost:3000/campgrounds")
 }
