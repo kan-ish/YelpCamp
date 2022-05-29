@@ -11,7 +11,8 @@ const userSchema = new Schema({
     isActive: {
         type: Boolean,
         default: false
-    }
+    },
+    rand: String
 });
 userSchema.plugin(passportLocalMongoose);
 

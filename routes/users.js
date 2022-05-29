@@ -9,7 +9,7 @@ router.get('/register', users.renderRegisterForm)
 router.post('/register', catchAsync(users.register))
 
 // Verify email
-router.post('/verify', users.verifyEmail)
+router.post('/verify/:id/:token', users.verifyEmail)
 
 // Login
 router.get('/login', users.renderLoginForm)
