@@ -22,7 +22,7 @@ module.exports.register = async (req, res) => {
             token: crypto.randomBytes(32).toString("hex"),
           }).save();
         
-        const url = `http://localhost:3000/verify/${user._id}/${token.token}`
+        const url = `https://fathomless-anchorage-62415.herokuapp.com/verify/${user._id}/${token.token}`
 
         // send email
         let transporter = nodemailer.createTransport({
@@ -74,7 +74,7 @@ module.exports.renderLoginForm = (req, res) => {
 }
 module.exports.login = (req, res) => { // Actual login code in users router file
     req.flash('success', 'Welcome Back!');
-    const redirectUrl = req.session.returnTo || `${process.env.BASE_URL}/campgrounds`;
+    const redirectUrl = req.session.returnTo || 'https://fathomless-anchorage-62415.herokuapp.com/campgrounds';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 }
@@ -96,5 +96,5 @@ module.exports.verifyEmail = async (req, res, next) => {
     }
 
     req.flash('success', 'Email successfully verified!');
-    res.redirect(`/campgrounds`)
+    res.redirect(`https://fathomless-anchorage-62415.herokuapp.com/campgrounds`)
 }
